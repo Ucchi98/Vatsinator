@@ -30,6 +30,8 @@
 
 #include "singleton.h"
 
+#include "vatsimdata/extendedatc.h"
+
 class ActiveAirport;
 class Airport;
 class AirportDatabase;
@@ -207,6 +209,9 @@ public:
 
   inline const QMultiMap<QString, QString> &
   aliases() const { return __aliases; }
+  
+  inline const QVector<ExtendedAtc> &
+  extendedAtcs() const { return __extendedAtc; }
 
   inline const QDateTime &
   dateDataUpdated() const { return __dateVatsimDataUpdated; }
@@ -256,6 +261,7 @@ private:
   void __readCountryFile(const QString&);
   void __readFirFile(const QString&);
   void __readUirFile(const QString&);
+  void __readExtendedAtcFile(const QString&);
 
   /**
    * Removes all data, frees pointers
@@ -280,6 +286,9 @@ private:
 
   /* This set contains list of aliases. Filled in by init() method */
   QMultiMap<QString, QString> __aliases;
+  
+  /* Extended data for ATC */
+  QVector<ExtendedAtc> __extendedAtc;
 
   /* This is URL that we can obtain METAR from */
   QString   __metarURL;

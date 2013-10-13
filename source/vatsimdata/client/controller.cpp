@@ -24,7 +24,7 @@
 #include "network/statspurveyor.h"
 
 #include "vatsimdata/airport/activeairport.h"
-
+#include "vatsimdata/extendedatc.h"
 #include "vatsimdata/uir.h"
 #include "vatsimdata/vatsimdatahandler.h"
 
@@ -89,6 +89,7 @@ Controller::Controller(const QStringList& _data) :
   
   __cleanupAtis();
   __setMyIcaoAndFacility();
+  __findExtension();
 }
 
 void Controller::__cleanupAtis() {
@@ -258,6 +259,19 @@ Controller::__setMyIcaoAndFacility() {
   }
 
   __isOK = false;
+}
+
+void
+Controller::__findExtension() {
+  for (const ExtendedAtc& ea: VatsimDataHandler::getSingleton().extendedAtcs()) {
+    if (ea.regExp().exactMatch(callsign())) {
+      __extension = &ea;
+      qDebug() << "Found extension for " << callsign();
+      return;
+    }
+  }
+  
+  __extension = nullptr;
 }
 
 void

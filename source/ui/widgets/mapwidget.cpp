@@ -1151,28 +1151,28 @@ MapWidget::__drawAirports(float _moveX) {
       glDrawArrays(GL_QUADS, 0, 4); checkGLErrors(HERE);
       
       if (__settings.view.airport_labels || __keyPressed)
-	__drawIcaoLabel(it.value()); checkGLErrors(HERE);
+        __drawIcaoLabel(it.value()); checkGLErrors(HERE);
       
       if (inRange && !__underMouse)
-	__underMouse = it.value();
+        __underMouse = it.value();
       
       if (it.value()->hasApproach()) {
-	glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
+        glBindTexture(GL_TEXTURE_2D, 0); checkGLErrors(HERE);
   
-	qglColor(__settings.colors.approach_circle);
-	glVertexPointer(2, GL_FLOAT, 0, __circle); checkGLErrors(HERE);
+        qglColor(__settings.colors.approach_circle);
+        glVertexPointer(2, GL_FLOAT, 0, __circle); checkGLErrors(HERE);
   
-	glLineWidth(1.5);
-	glLineStipple(1, 0xF0F0);
-	glPushMatrix();
-	glScalef(0.005f * __zoom, 0.005f * __zoom, 0); checkGLErrors(HERE);
-	glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
-	glPopMatrix();
-	glLineWidth(1.0);
-	glLineStipple(1, 0xFFFF); checkGLErrors(HERE);
-	
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-	glVertexPointer(2, GL_FLOAT, 0, VERTICES);
+        glLineWidth(1.5);
+        glLineStipple(1, 0xF0F0);
+        glPushMatrix();
+          glScalef(0.005f * __zoom, 0.005f * __zoom, 0); checkGLErrors(HERE);
+          glDrawArrays(GL_LINE_LOOP, 0, __circleCount);
+        glPopMatrix();
+        glLineWidth(1.0);
+        glLineStipple(1, 0xFFFF); checkGLErrors(HERE);
+        
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+        glVertexPointer(2, GL_FLOAT, 0, VERTICES);
       }
       
     glPopMatrix();

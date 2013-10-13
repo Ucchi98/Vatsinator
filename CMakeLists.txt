@@ -89,6 +89,7 @@ vatsinator_install (
 set (vatsinator_RESOURCES_DATA
     resources/data/alias
     resources/data/country
+    resources/data/extendedatc
     resources/data/fir
     resources/data/model
     resources/data/uir)

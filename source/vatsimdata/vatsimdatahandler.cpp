@@ -17,6 +17,7 @@
 */
 
 #include <QtGui>
+#include <qjson/parser.h>
 
 #include "storage/cachefile.h"
 
@@ -101,6 +102,8 @@ VatsimDataHandler::init() {
   auto f = QtConcurrent::run(this, &VatsimDataHandler::__readCountryFile,
                              FileManager::path("data/country"));
   
+  QtConcurrent::run(this, &VatsimDataHandler::__readExtendedAtcFile,
+                    FileManager::path("data/extendedatc"));
   QtConcurrent::run(this, &VatsimDataHandler::__readAliasFile,
                     FileManager::path("data/alias"));
   QtConcurrent::run(this, &VatsimDataHandler::__readUirFile,
@@ -497,6 +500,34 @@ VatsimDataHandler::__readUirFile(const QString& _fName) {
   file.close();
   
   VatsinatorApplication::log("Finished reading \"uir\" file.");
+}
+
+void
+VatsimDataHandler::__readExtendedAtcFile(const QString& _fName) {
+  VatsinatorApplication::log("Reading %s...", qPrintable(_fName));
+  
+  QFile file(_fName);
+  
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    emit localDataBad(tr("File %1 could not be opened!").arg(_fName));
+    return;
+  }
+  
+  QJson::Parser parser;
+  bool ok;
+  QVariantList list = parser.parse(&file, &ok).toList();
+  if (!ok) {
+    emit localDataBad(tr("File %1 could not be read!").arg(_fName));
+    file.close();
+    return;
+  }
+  
+  for (auto l: list)
+    __extendedAtc << ExtendedAtc(l);
+  
+  file.close();
+  
+  VatsinatorApplication::log("Finished reading %s.", qPrintable(_fName));
 }
 
 void

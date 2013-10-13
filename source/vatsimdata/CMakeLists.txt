@@ -3,6 +3,7 @@ vatsinator_start_subdirectory (vatsimdata)
 set (vatsimdata_SRCS
     airport.cpp
     client.cpp
+    extendedatc.cpp
     fir.cpp
     metar.cpp
     uir.cpp

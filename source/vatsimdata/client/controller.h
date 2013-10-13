@@ -25,9 +25,11 @@
 
 #include "vatsimdata/client.h"
 
-struct AirportRecord;
+class ExtendedAtc;
 class Fir;
 class Uir;
+
+struct AirportRecord;
 
 class Controller : public Client {
   
@@ -109,9 +111,12 @@ protected:
 private:
   void __cleanupAtis();
   void __setMyIcaoAndFacility();
+  void __findExtension();
   void __produceDescription(const Fir*);
   void __produceDescription(const Uir*);
   void __produceDescription(const AirportRecord*);
+  
+  const ExtendedAtc* __extension;
 
   static bool __initRatings();
 
