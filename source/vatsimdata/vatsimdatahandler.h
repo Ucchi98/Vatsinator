@@ -38,10 +38,12 @@ class ControllerTableModel;
 class EmptyAirport;
 class FirDatabase;
 class FlightTableModel;
+class MapScene;
 class Pilot;
 class PlainTextDownloader;
 class Uir;
 class VatsinatorApplication;
+class VatsinatorWindow;
 
 struct AirportRecord;
 
@@ -55,6 +57,8 @@ class VatsimDataHandler :
    */
 
   Q_OBJECT
+  
+  friend class VatsinatorWindow;
   
 signals:
   
@@ -247,6 +251,9 @@ private:
     Clients,
     Prefile
   };
+  
+  /* Called only by VatsinatorWindow */
+  MapScene* generateMapScene() const;
   
   /**
    * These functions read data files.

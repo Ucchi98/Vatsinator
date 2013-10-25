@@ -24,7 +24,6 @@
 
 #include "ui/userinterface.h"
 
-#include "ui/widgets/mapwidget.h"
 #include "ui/windows/airportdetailswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
@@ -183,7 +182,7 @@ FlightDetailsWindow::__updateData() {
 void
 FlightDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
-  MapWidget::getSingleton().showClient(__current);
+//   MapWidget::getSingleton().showClient(__current);
 }
 
 

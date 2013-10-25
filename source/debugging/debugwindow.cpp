@@ -21,8 +21,6 @@
 #include "glutils/glresourcemanager.h"
 #include "glutils/vertexbufferobject.h"
 
-#include "ui/widgets/mapwidget.h"
-
 #include "debugging/glerrors.h"
 
 #include "debugwindow.h"

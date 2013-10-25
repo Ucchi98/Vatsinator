@@ -35,9 +35,6 @@ ModuleManager::ModuleManager() :
     __homeLocation(new HomeLocation()),
     __modelsMatcher(new ModelMatcher()),
     __vatbookHandler(new VatbookHandler()) {
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
-          this,                                     SLOT(__initAfterGL()),
-          Qt::DirectConnection);
   connect(VatsimDataHandler::getSingletonPtr(),     SIGNAL(vatsimDataUpdated()),
           this,                                     SLOT(updateData()),
           Qt::DirectConnection);
@@ -61,9 +58,4 @@ void
 ModuleManager::updateData() {
   __airportTracker->updateData();
   __flightTracker->updateData();
-}
-
-void
-ModuleManager::__initAfterGL() {
-  __modelsMatcher->init();
 }

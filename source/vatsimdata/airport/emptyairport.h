@@ -50,9 +50,6 @@ public:
   inline Controller::Facilities
   facilities() const { return 0; }
   
-  inline void
-  drawLines() const {}
-  
 };
 
 #endif // EMPTYAIRPORT_H

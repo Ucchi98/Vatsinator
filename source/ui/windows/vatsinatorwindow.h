@@ -25,6 +25,7 @@
 #include "singleton.h"
 #include "ui/ui_vatsinatorwindow.h"
 
+class QGraphicsView;
 class QLabel;
 class QProgressBar;
 
@@ -54,8 +55,8 @@ public:
    */
   void infoBarUpdate();
   
-  inline MapWidget*
-  mapWidget() { return MapDisplay; }
+  inline QGraphicsView *
+  map() { return Map; }
 
   inline QProgressBar*
   progressBar() { return __progressBar; }

@@ -18,7 +18,7 @@
 
 #include <QtGui>
 
-#include "ui/widgets/mapwidget.h"
+#include "db/airportdatabase.h"
 
 #include "vatsimdata/airport.h"
 #include "vatsimdata/vatsimdatahandler.h"
@@ -45,9 +45,10 @@ AirportTracker::~AirportTracker() {
 
 void
 AirportTracker::init() {
-  __myMapWidget = MapWidget::getSingletonPtr();
-  connect(__myMapWidget,    SIGNAL(airportLinesToggled(const Airport*)),
-          this,             SLOT(__toggleAirport(const Airport*)));
+  // TODO
+//   __myMapWidget = MapWidget::getSingletonPtr();
+//   connect(__myMapWidget,    SIGNAL(airportLinesToggled(const Airport*)),
+//           this,             SLOT(__toggleAirport(const Airport*)));
 }
 
 void

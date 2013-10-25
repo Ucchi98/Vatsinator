@@ -18,7 +18,6 @@
 
 #include <QtGui>
 
-#include "ui/widgets/mapwidget.h"
 #include "ui/windows/flightdetailswindow.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
@@ -33,16 +32,15 @@
 FlightTracker::FlightTracker(QObject* _parent) :
     QObject(_parent),
     __currentCallsign(""),
-    __currentPointer(NULL),
-    __myMapWidget(NULL) {}
+    __currentPointer(nullptr) {}
 
 void
 FlightTracker::init() {
-  __myMapWidget = MapWidget::getSingletonPtr();
-  connect(__myMapWidget,  SIGNAL(flightTrackingRequested(const Pilot*)),
-          this,           SLOT(__trackFlight(const Pilot*)));
-  connect(__myMapWidget,  SIGNAL(flightTrackingCanceled()),
-          this,           SLOT(__cancelFlight()));
+  // TODO
+//   connect(__myMapWidget,  SIGNAL(flightTrackingRequested(const Pilot*)),
+//           this,           SLOT(__trackFlight(const Pilot*)));
+//   connect(__myMapWidget,  SIGNAL(flightTrackingCanceled()),
+//           this,           SLOT(__cancelFlight()));
   
   connect(FlightDetailsWindow::getSingletonPtr(), SIGNAL(flightTrackingStateChanged(const Pilot*, int)),
           this,                                   SLOT(__trackFlight(const Pilot*, int)));

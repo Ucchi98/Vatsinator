@@ -18,8 +18,6 @@
 
 #include <QtGui>
 
-#include "glutils/glresourcemanager.h"
-
 #include "vatsimdata/vatsimdatahandler.h"
 
 #include "storage/filemanager.h"
@@ -29,8 +27,23 @@
 #include "defines.h"
 
 ModelMatcher::ModelMatcher() {
-  __modelsFiles["ZZZZ"] = "1p"; // default
+  __acftTypes["ZZZZ"] = "1p"; // default
+  
+  __readDatFile();
+  __loadPixmaps();
+}
 
+QPixmap
+ModelMatcher::matchMyModel(const QString& _acft) const {
+  QRegExp exp("([a-zA-Z0-9]{4})");
+  if (exp.indexIn(_acft))
+    return __typePixmaps[__acftTypes.value(exp.cap(1), "1p")];
+  else
+    return __typePixmaps[__acftTypes.value("ZZZZ")];
+}
+
+void
+ModelMatcher::__readDatFile() {
   QFile modelsFile(FileManager::path("data/model"));
 
   if (!modelsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -43,39 +56,24 @@ ModelMatcher::ModelMatcher() {
   while (!modelsFile.atEnd()) {
     QString line(modelsFile.readLine());
     line = line.simplified();
-
+    
     if (line.startsWith('#') || line.isEmpty())
       continue;
-
+    
     auto splitted = line.split(' ');
-    __modelsFiles.insert(splitted[0], splitted[1]);
+    __acftTypes.insert(splitted[0], splitted[1]);
   }
 }
 
 void
-ModelMatcher::init() {
-  QMap<QString, GLuint> pixmapsLoaded;
+ModelMatcher::__loadPixmaps() {
   QString path(FileManager::staticPath(FileManager::Pixmaps));
-
-  pixmapsLoaded.insert("1p", GlResourceManager::loadImage(path % "/1p32.png"));
-  pixmapsLoaded.insert("2p", GlResourceManager::loadImage(path % "/2p32.png"));
-  pixmapsLoaded.insert("4p", GlResourceManager::loadImage(path % "/4p32.png"));
-  pixmapsLoaded.insert("2j", GlResourceManager::loadImage(path % "/2j32.png"));
-  pixmapsLoaded.insert("3j", GlResourceManager::loadImage(path % "/3j32.png"));
-  pixmapsLoaded.insert("4j", GlResourceManager::loadImage(path % "/4j32.png"));
-  pixmapsLoaded.insert("conc", GlResourceManager::loadImage(path % "/conc32.png"));
-
-  for (auto it = __modelsFiles.begin(); it != __modelsFiles.end(); ++it) {
-    Q_ASSERT(pixmapsLoaded.contains(it.value()));
-    __modelsPixmaps.insert(it.key(), pixmapsLoaded[it.value()]);
-  }
-}
-
-GLuint
-ModelMatcher::matchMyModel(const QString& _acft) {
-  for (auto it = __modelsPixmaps.begin(); it != __modelsPixmaps.end(); ++it)
-    if (_acft.contains(it.key(), Qt::CaseInsensitive))
-      return it.value();
-
-  return __modelsPixmaps["ZZZZ"];
+  
+  __typePixmaps.insert("1p", QPixmap(path % "/1p32.png"));
+  __typePixmaps.insert("2p", QPixmap(path % "/2p32.png"));
+  __typePixmaps.insert("4p", QPixmap(path % "/4p32.png"));
+  __typePixmaps.insert("2j", QPixmap(path % "/2j32.png"));
+  __typePixmaps.insert("3j", QPixmap(path % "/3j32.png"));
+  __typePixmaps.insert("4j", QPixmap(path % "/4j32.png"));
+  __typePixmaps.insert("conc", QPixmap(path % "/conc32.png"));
 }

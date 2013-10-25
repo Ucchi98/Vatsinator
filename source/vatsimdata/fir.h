@@ -22,8 +22,6 @@
 
 #include <QVector>
 
-#include <qgl.h>
-
 #include "db/point.h"
 
 #include "vatsimdata/airport.h"
@@ -61,9 +59,6 @@ public:
   void clear();
   bool isStaffed() const;
 
-  void drawBorders() const;
-  void drawTriangles() const;
-
   inline ControllerTableModel *
   staffModel() const { return __staff; }
 
@@ -96,20 +91,14 @@ public:
 
   inline void
   setCountry(const QString& _c) { __country = _c; }
-
-  inline GLuint
-  icaoTip() const { return __icaoTip ? __icaoTip : __generateTip(); }
-
+  
   inline QVector<Point> &
   borders() { return __borders; }
-
+  
   inline QVector<unsigned short> &
   triangles() { return __triangles; }
 
 private:
-
-  GLuint __generateTip() const;
-  void __prepareVBO();
 
   QString __icao;
   bool __oceanic;
@@ -121,19 +110,11 @@ private:
   QVector<Point> __borders;
   QVector<unsigned short> __triangles;
 
-  mutable GLuint __icaoTip;
-
   ControllerTableModel*   __staff;
   FlightTableModel*   __flights;
   AirportTableModel*  __airports;
 
   unsigned __uirStaffCount;
-
-  VertexBufferObject* __bordersVBO;
-  VertexBufferObject* __trianglesVBO;
-
-  unsigned  __bordersSize;
-  unsigned  __trianglesSize;
 };
 
 #endif // FIR_H

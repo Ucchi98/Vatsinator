@@ -43,8 +43,6 @@ public:
   Airport(const QString&);
   Airport(const AirportRecord*);
   
-  virtual ~Airport();
-  
   virtual unsigned countDepartures() const = 0;
   virtual unsigned countOutbounds() const = 0;
   virtual unsigned countArrivals() const = 0;
@@ -53,16 +51,11 @@ public:
   virtual bool hasApproach() const = 0;
   virtual Controller::Facilities facilities() const = 0;
   
-  virtual void drawLines() const = 0;
-  
   virtual inline const AirportRecord *
   data() const { return __data; }
   
   inline Clickable::Type
   objectType() const { return Clickable::AIRPORT; }
-  
-  inline GLuint
-  labelTip() const { return __labelTip ? __labelTip : __generateTip(); }
   
   inline Fir **
   firs() { return __firs; }
@@ -71,7 +64,6 @@ protected:
   Fir* __firs[2];
   
 private:
-  GLuint __generateTip() const;
   
   const AirportRecord* __data;
   

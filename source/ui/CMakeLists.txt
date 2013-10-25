@@ -57,6 +57,12 @@ set (ui_SRCS
     dialogs/newversiondialog.cpp
     dialogs/statusfetcherrordialog.cpp
     
+    graphics/flightitem.cpp
+    graphics/flightlabelitem.cpp
+    graphics/mapconfig.cpp
+    graphics/mapscene.cpp
+    graphics/mapview.cpp
+    
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp
     pages/miscellaneouspage.cpp
@@ -67,7 +73,6 @@ set (ui_SRCS
     views/controllertableview.cpp
     views/flighttableview.cpp
     
-    widgets/mapwidget.cpp
     widgets/replaceablewidget.cpp
     widgets/scrolllabel.cpp
     
@@ -107,6 +112,9 @@ set (ui_MOC_SRCS
     dialogs/newversiondialog.h
     dialogs/statusfetcherrordialog.h
     
+    graphics/mapscene.h
+    graphics/mapview.h
+    
     pages/abstractsettingspage.h
     pages/colorspage.h
     pages/miscellaneouspage.h
@@ -117,7 +125,6 @@ set (ui_MOC_SRCS
     views/controllertableview.h
     views/flighttableview.h
     
-    widgets/mapwidget.h
     widgets/replaceablewidget.h
     widgets/scrolllabel.h
     

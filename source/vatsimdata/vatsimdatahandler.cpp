@@ -27,25 +27,24 @@
 
 #include "modules/modulemanager.h"
 
+#include "ui/graphics/flightitem.h"
+#include "ui/graphics/mapscene.h"
 #include "ui/pages/miscellaneouspage.h"
-
 #include "ui/windows/vatsinatorwindow.h"
 
 #include "storage/settingsmanager.h"
 
 #include "vatsimdata/fir.h"
 #include "vatsimdata/uir.h"
-
 #include "vatsimdata/airport/activeairport.h"
 #include "vatsimdata/airport/emptyairport.h"
-
 #include "vatsimdata/client/controller.h"
 #include "vatsimdata/client/pilot.h"
-
 #include "vatsimdata/models/controllertablemodel.h"
 #include "vatsimdata/models/flighttablemodel.h"
 
 #include "storage/filemanager.h"
+
 #include "vatsinatorapplication.h"
 
 #include "vatsimdatahandler.h"
@@ -337,6 +336,17 @@ VatsimDataHandler::loadCachedData() {
   VatsinatorApplication::log("Cache restored.");
 }
 
+MapScene *
+VatsimDataHandler::generateMapScene() const {
+  MapScene* scene = new MapScene;
+  for (const Pilot* p: __flights->flights()) {
+    if (p->flightStatus() == Pilot::AIRBORNE)
+      scene->addItem(new FlightItem(p));
+  }
+  
+  return scene;
+}
+
 void
 VatsimDataHandler::__readAliasFile(const QString& _fName) {
   VatsinatorApplication::log("Reading \"alias\" file...");
@@ -537,6 +547,7 @@ VatsimDataHandler::__dataFetched(const QString& _data) {
       emit dataCorrupted();
       return;
     }
+    
     FirDatabase::getSingleton().clearAll();
     parseDataFile(_data);
     emit vatsimDataUpdated();

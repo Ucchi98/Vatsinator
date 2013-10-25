@@ -21,8 +21,8 @@
 #define USERINTERFACE_H
 
 #include <QObject>
+#include <QPoint>
 
-#include "ui/widgets/mapwidget.h"
 #include "singleton.h"
 
 #ifndef NO_DEBUG

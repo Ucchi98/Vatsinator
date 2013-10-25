@@ -43,8 +43,6 @@ public:
   bool hasApproach() const;
   Controller::Facilities facilities() const;
   
-  void drawLines() const;
-  
   void addStaff(const Controller*);
   void addInbound(const Pilot*);
   void addOutbound(const Pilot*);

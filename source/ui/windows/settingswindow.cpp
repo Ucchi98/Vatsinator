@@ -24,8 +24,6 @@
 #include "ui/pages/abstractsettingspage.h"
 #include "ui/pages/miscellaneouspage.h"
 
-#include "ui/widgets/mapwidget.h"
-
 #include "ui/userinterface.h"
 
 #include "settingswindow.h"

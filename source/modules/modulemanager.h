@@ -45,9 +45,6 @@ public:
 public slots:
   void updateData();
 
-private slots:
-  void __initAfterGL();
-
 private:
   AirportTracker* __airportTracker;
   FlightTracker*  __flightTracker;

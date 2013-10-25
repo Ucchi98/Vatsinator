@@ -23,8 +23,6 @@
 
 #include "ui/userinterface.h"
 
-#include "ui/widgets/mapwidget.h"
-
 #include "vatsimdata/client/controller.h"
 
 #include "vatsimdata/vatsimdatahandler.h"
@@ -95,6 +93,6 @@ AtcDetailsWindow::__updateData() {
 void
 AtcDetailsWindow::__handleShowClicked() {
   Q_ASSERT(__current);
-  MapWidget::getSingleton().showClient(__current);
+//   MapWidget::getSingleton().showClient(__current);
 }
 

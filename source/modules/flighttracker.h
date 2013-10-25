@@ -25,7 +25,6 @@
 
 #include "singleton.h"
 
-class MapWidget;
 class Pilot;
 
 class FlightTracker :
@@ -52,7 +51,6 @@ public:
 private:
   QString       __currentCallsign;
   const Pilot*  __currentPointer;
-  MapWidget*    __myMapWidget;
 
 private slots:
   void __trackFlight(const Pilot*);

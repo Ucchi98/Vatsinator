@@ -25,6 +25,7 @@
 
 #include "modules/homelocation.h"
 
+#include "ui/graphics/mapscene.h"
 #include "ui/windows/aboutwindow.h"
 #include "ui/windows/atclistwindow.h"
 #include "ui/windows/flightlistwindow.h"
@@ -208,6 +209,12 @@ VatsinatorWindow::__statusUpdated() {
 
 void
 VatsinatorWindow::__dataUpdated() {
+  if (Map->scene()) {
+    Map->scene()->deleteLater();
+  }
+  
+  Map->setScene(VatsimDataHandler::getSingleton().generateMapScene());
+  
   infoBarUpdate();
   statusBarUpdate();
   Replaceable->setCurrentWidget(__statusBox);

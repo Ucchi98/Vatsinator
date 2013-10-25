@@ -22,8 +22,8 @@
 
 #include <QCoreApplication>
 #include <QString>
+#include <QPixmap>
 #include <QMap>
-#include <QtOpenGL>
 
 #include "singleton.h"
 
@@ -36,26 +36,28 @@ class ModelMatcher : public Singleton<ModelMatcher> {
   Q_DECLARE_TR_FUNCTIONS(ModelMatcher);
 
 public:
-  /**
-   * Reads the models.dat file.
-   */
+  
   ModelMatcher();
 
   /**
-   * Loads the pixmaps.
-   */
-  void init();
-
-  /**
    * @param acft Aircraft code that comes from the flight plan.
-   * @return Model's texture ID.
+   * @return Model texture.
    */
-  GLuint matchMyModel(const QString&);
+  QPixmap matchMyModel(const QString&) const;
 
 private:
+  /**
+   * Reads the models.dat file.
+   */
+  void __readDatFile();
+  
+  /**
+   * Loads pixmaps for aircraft types.
+   */
+  void __loadPixmaps();
 
-  QMap< QString, QString > __modelsFiles;
-  QMap< QString, GLuint >  __modelsPixmaps;
+  QMap<QString, QString> __acftTypes;
+  QMap<QString, QPixmap>  __typePixmaps;
 
 
 };
