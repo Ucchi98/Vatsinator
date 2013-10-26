@@ -25,6 +25,7 @@
 #include <QRectF>
 #include <QPixmap>
 
+class FlightLabelItem;
 class Pilot;
 
 class FlightItem : public QGraphicsItem {
@@ -41,6 +42,10 @@ public:
   
   inline const Pilot *
   pilot() const { return __pilot; }
+  
+protected:
+  void hoverEnterEvent(QGraphicsSceneHoverEvent*) override;
+  void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override;
 
 private:
   QString __tooltipText() const;
@@ -50,6 +55,8 @@ private:
   
   QPoint __topLeft;
   QPointF __topLeftF;
+  
+  FlightLabelItem* __label;
 
 };
 

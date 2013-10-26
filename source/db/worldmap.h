@@ -27,6 +27,8 @@
 
 #include "singleton.h"
 
+class VertexBufferObject;
+
 class WorldMap :
     public QObject,
     public Singleton<WorldMap> {

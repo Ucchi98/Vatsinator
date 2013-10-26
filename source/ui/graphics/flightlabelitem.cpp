@@ -32,6 +32,8 @@ FlightLabelItem::FlightLabelItem(QGraphicsItem* _parent) :
     __label(MapConfig::pilotLabelBackground()) {
   setFlags(ItemIgnoresTransformations);
   
+  setZValue(2);
+  
   FlightItem* flightItem = dynamic_cast<FlightItem*>(parentItem());
   Q_ASSERT(flightItem);
   
@@ -46,7 +48,7 @@ FlightLabelItem::FlightLabelItem(QGraphicsItem* _parent) :
   painter.drawText(rectangle, Qt::AlignCenter, flightItem->callsign());
   
   qreal xPos = 0 - (__label.width() / 2);
-  qreal yPos = 0 - __label.height() - 16;
+  qreal yPos = 0 - __label.height() - 12;
   
   __topLeft = QPoint(xPos, yPos);
   __topLeftF = QPointF(xPos, yPos);

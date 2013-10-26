@@ -38,6 +38,9 @@ FlightItem::FlightItem(const Pilot* _pilot) :
     __pilot(_pilot) {
   setFlags(ItemIgnoresTransformations);
   
+  setZValue(1);
+  setAcceptHoverEvents(true);
+  
   setPos(__pilot->position().longitude, 0 - __pilot->position().latitude);
   
   QTransform transform;
@@ -55,7 +58,7 @@ FlightItem::FlightItem(const Pilot* _pilot) :
   setToolTip(__tooltipText());
   setCursor(QCursor(Qt::PointingHandCursor));
   
-  new FlightLabelItem(this);
+  __label = new FlightLabelItem(this);
 }
 
 void
@@ -71,6 +74,18 @@ FlightItem::boundingRect() const {
 const QString &
 FlightItem::callsign() const {
   return __pilot->callsign();
+}
+
+void
+FlightItem::hoverEnterEvent(QGraphicsSceneHoverEvent*) {
+  setZValue(zValue() + 2);
+  update();
+}
+
+void
+FlightItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*) {
+  setZValue(zValue() - 2);
+  update();
 }
 
 QString

@@ -66,18 +66,18 @@ MapConfig::firLabelBackground() {
 
 const QFont &
 MapConfig::pilotFont() {
-  static QFont font("Verdana", 10, QFont::Normal);
+  static QFont font("Verdana", 7, QFont::Normal);
   return font;
 }
 
 const QFont &
 MapConfig::airportFont() {
-  static QFont font("Verdana", 8, QFont::Bold);
+  static QFont font("Verdana", 6, QFont::Bold);
   return font;
 }
 
 const QFont &
 MapConfig::firFont() {
-  static QFont font("Verdana", 10, QFont::Bold);
+  static QFont font("Verdana", 7, QFont::Bold);
   return font;
 }
