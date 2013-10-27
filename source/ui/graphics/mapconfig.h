@@ -50,6 +50,9 @@ public:
     return 600;
   }
   
+  static const QPixmap& airportIcon();
+  static const QPixmap& staffedAirportIcon();
+  
   static const QColor& pilotPen();
   static const QColor& airportPen();
   static const QColor& firPen();

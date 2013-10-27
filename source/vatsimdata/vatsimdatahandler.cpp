@@ -27,6 +27,7 @@
 
 #include "modules/modulemanager.h"
 
+#include "ui/graphics/airportitem.h"
 #include "ui/graphics/flightitem.h"
 #include "ui/graphics/mapscene.h"
 #include "ui/pages/miscellaneouspage.h"
@@ -339,9 +340,20 @@ VatsimDataHandler::loadCachedData() {
 MapScene *
 VatsimDataHandler::generateMapScene() const {
   MapScene* scene = new MapScene;
+  
   for (const Pilot* p: __flights->flights()) {
     if (p->flightStatus() == Pilot::AIRBORNE)
       scene->addItem(new FlightItem(p));
+  }
+  
+  for (auto a: __activeAirports) {
+    if (a->data())
+      scene->addItem(new AirportItem(a));
+  }
+  
+  for (auto a: __emptyAirports) {
+    if (a->data())
+      scene->addItem(new AirportItem(a));
   }
   
   return scene;

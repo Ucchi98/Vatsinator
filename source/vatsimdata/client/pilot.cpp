@@ -145,7 +145,7 @@ Pilot::__setMyStatus() {
       VatsimDataHandler::getSingleton().activeAirports()[__route.destination]->data();
 
     if ((ap_origin == ap_arrival) && (ap_origin != NULL)) // traffic pattern?
-      if (__groundSpeed < 50) {
+      if (__groundSpeed < 60) {
         __flightStatus = DEPARTING;
         return;
       }
@@ -153,7 +153,7 @@ Pilot::__setMyStatus() {
     if (ap_origin)
       if ((VatsimDataHandler::distance(ap_origin->longitude, ap_origin->latitude,
                                            __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
-      (__groundSpeed < 50)) {
+      (__groundSpeed < 60)) {
         __flightStatus = DEPARTING;
         return;
       }
@@ -161,12 +161,12 @@ Pilot::__setMyStatus() {
     if (ap_arrival)
       if ((VatsimDataHandler::distance(ap_arrival->longitude, ap_arrival->latitude,
                                            __position.longitude, __position.latitude) < PILOT_TO_AIRPORT) &&
-      (__groundSpeed < 50)) {
+      (__groundSpeed < 60)) {
         __flightStatus = ARRIVED;
         return;
       }
   } else { // no flight plan
-    if (__groundSpeed > 50) {
+    if (__groundSpeed > 60) {
       __flightStatus = AIRBORNE;
       return;
     }

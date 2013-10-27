@@ -22,6 +22,18 @@
 #include "mapconfig.h"
 #include "defines.h"
 
+const QPixmap &
+MapConfig::airportIcon() {
+  static QPixmap icon(":/pixmaps/airport.png");
+  return icon;
+}
+
+const QPixmap &
+MapConfig::staffedAirportIcon() {
+  static QPixmap icon(":/pixmaps/airport_staffed.png");
+  return icon;
+}
+
 const QColor &
 MapConfig::pilotPen() {
   static QColor pen(0, 0, 0);

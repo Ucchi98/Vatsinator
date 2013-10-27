@@ -273,34 +273,34 @@ private:
   /* These are vectors of connected clients */
   FlightTableModel*   __flights;
   ControllerTableModel*   __atcs;
-
+  
   QVector<Uir*>   __uirs;
-
+  
   /* This is vector of data servers, obtained from status file */
   QVector<QString>  __servers;
-
+  
   /* This set contains list of active airports, used later by OpenGLWidget */
   QMap<QString, ActiveAirport*> __activeAirports;
   
   /* Inactive airports (no staff, no flights) */
   QMap<QString, EmptyAirport*> __emptyAirports;
-
+  
   /* This set contains list of aliases. Filled in by init() method */
   QMultiMap<QString, QString> __aliases;
-
+  
   /* This is URL that we can obtain METAR from */
   QString   __metarURL;
-
+  
   /* And status.txt */
   QString   __statusURL;
-
+  
   QDateTime __dateVatsimDataUpdated;
-
+  
   int       __observers;
-
+  
   /* Indicates whether the status.txt file was already read or not */
   bool      __statusFileFetched;
-
+  
   AirportDatabase& __airports;
   FirDatabase&     __firs;
   

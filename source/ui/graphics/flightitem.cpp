@@ -37,9 +37,10 @@ FlightItem::FlightItem(const Pilot* _pilot) :
     QGraphicsItem(nullptr),
     __pilot(_pilot) {
   setFlags(ItemIgnoresTransformations);
-  
   setZValue(1);
   setAcceptHoverEvents(true);
+  setToolTip(__tooltipText());
+  setCursor(QCursor(Qt::PointingHandCursor));
   
   setPos(__pilot->position().longitude, 0 - __pilot->position().latitude);
   
@@ -54,9 +55,6 @@ FlightItem::FlightItem(const Pilot* _pilot) :
   
   __topLeft = QPoint(xPos, yPos);
   __topLeftF = QPointF(xPos, yPos);
-  
-  setToolTip(__tooltipText());
-  setCursor(QCursor(Qt::PointingHandCursor));
   
   __label = new FlightLabelItem(this);
 }
