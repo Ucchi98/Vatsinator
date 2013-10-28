@@ -58,6 +58,7 @@ set (ui_SRCS
     dialogs/statusfetcherrordialog.cpp
     
     graphics/airportitem.cpp
+    graphics/airportlabelitem.cpp
     graphics/flightitem.cpp
     graphics/flightlabelitem.cpp
     graphics/mapconfig.cpp

@@ -1,5 +1,5 @@
 /*
- * flightlabelitem.cpp
+ * airportlabelitem.cpp
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,46 +19,41 @@
 
 #include <QtGui>
 
-#include "ui/graphics/flightitem.h"
+#include "ui/graphics/airportitem.h"
 #include "ui/graphics/mapconfig.h"
 
-#include "vatsimdata/client/pilot.h"
-
-#include "flightlabelitem.h"
+#include "airportlabelitem.h"
 #include "defines.h"
 
-FlightLabelItem::FlightLabelItem(QGraphicsItem* _parent) :
+AirportLabelItem::AirportLabelItem(QGraphicsItem* _parent) :
     QGraphicsItem(_parent),
-    __label(MapConfig::pilotLabelBackground()) {
+    __label(MapConfig::airportLabelBackground()) {
   
-  setZValue(2);
+  AirportItem* apItem = dynamic_cast<AirportItem*>(parentItem());
+  Q_ASSERT(apItem);
   
-  FlightItem* flightItem = dynamic_cast<FlightItem*>(parentItem());
-  Q_ASSERT(flightItem);
-  
-  /* Draw label text on the label background */
   QPainter painter(&__label);
   painter.setRenderHint(QPainter::TextAntialiasing);
   painter.setRenderHint(QPainter::SmoothPixmapTransform);
   painter.setRenderHint(QPainter::HighQualityAntialiasing);
-  painter.setFont(MapConfig::pilotFont());
-  painter.setPen(MapConfig::pilotPen());
-  QRect rectangle(28, 10, 73, 13); // size of the tooltip.png
-  painter.drawText(rectangle, Qt::AlignCenter, flightItem->callsign());
+  painter.setFont(MapConfig::airportFont());
+  painter.setPen(MapConfig::airportPen());
+  QRect rectangle(8, 2, 48, 12); // size of the tooltip.png
+  painter.drawText(rectangle, Qt::AlignCenter, apItem->icao());
   
   qreal xPos = 0 - (__label.width() / 2);
-  qreal yPos = 0 - __label.height() - 12;
+  qreal yPos = 0 - __label.height() + 22;
   
   __topLeft = QPoint(xPos, yPos);
   __topLeftF = QPointF(xPos, yPos);
 }
 
 void
-FlightLabelItem::paint(QPainter* _painter, const QStyleOptionGraphicsItem*, QWidget*) {
+AirportLabelItem::paint(QPainter* _painter, const QStyleOptionGraphicsItem*, QWidget*) {
   _painter->drawPixmap(__topLeft, __label);
 }
 
 QRectF
-FlightLabelItem::boundingRect() const {
+AirportLabelItem::boundingRect() const {
   return QRectF(__topLeftF, __label.size());
 }

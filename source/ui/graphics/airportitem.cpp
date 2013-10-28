@@ -21,6 +21,7 @@
 
 #include "db/airportdatabase.h"
 
+#include "ui/graphics/airportlabelitem.h"
 #include "ui/graphics/mapconfig.h"
 
 #include "vatsimdata/airport.h"
@@ -48,6 +49,8 @@ AirportItem::AirportItem(const Airport* _airport) :
   
   __topLeft = QPoint(xPos, yPos);
   __topLeftF = QPointF(xPos, yPos);
+  
+  __label = new AirportLabelItem(this);
 }
 
 void
@@ -58,6 +61,11 @@ AirportItem::paint(QPainter* _painter, const QStyleOptionGraphicsItem*, QWidget*
 QRectF
 AirportItem::boundingRect() const {
   return QRectF(__topLeftF, __icon.size());
+}
+
+QString
+AirportItem::icao() {
+  return QString(__airport->data()->icao);
 }
 
 QString

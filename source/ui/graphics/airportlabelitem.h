@@ -1,5 +1,5 @@
 /*
- * airportitem.h
+ * airportlabelitem.h
  * Copyright (C) 2013  Michał Garapich <michal@garapich.pl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,37 +17,25 @@
  *
  */
 
-#ifndef AIRPORTITEM_H
-#define AIRPORTITEM_H
+#ifndef AIRPORTLABELITEM_H
+#define AIRPORTLABELITEM_H
 
 #include <QGraphicsItem>
-#include <QPointF>
-#include <QPoint>
 
-class Airport;
-class AirportLabelItem;
+class AirportLabelItem : public QGraphicsItem {
 
-class AirportItem : public QGraphicsItem {
-  
 public:
-  AirportItem(const Airport*);
+  AirportLabelItem(QGraphicsItem*);
   
   void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*) override;
   QRectF boundingRect() const override;
-  
-  QString icao();
-  
+
 private:
-  QString __tooltipText() const;
-  
-  const Airport* __airport;
-  QPixmap __icon;
-  
-  AirportLabelItem* __label;
+  QPixmap __label;
   
   QPoint __topLeft;
   QPointF __topLeftF;
 
 };
 
-#endif // AIRPORTITEM_H
+#endif // AIRPORTLABELITEM_H
