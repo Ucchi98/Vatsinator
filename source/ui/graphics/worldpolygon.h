@@ -20,19 +20,14 @@
 #ifndef WORLDPOLYGON_H
 #define WORLDPOLYGON_H
 
-#include <QGLWidget>
-
-class VertexBufferObject;
-
-class WorldPolygon : public QGLWidget {
+class WorldPolygon {
   
 public:
   WorldPolygon();
   virtual ~WorldPolygon();
   
-protected:
-  void initializeGL() override;
-  void paintGL() override;
+  void init();
+  void paint();
   
 private:
   

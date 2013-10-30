@@ -18,6 +18,9 @@
  */
 
 #include <QtGui>
+#include <QtOpenGL>
+
+#include "glutils/glextensions.h"
 
 #include "ui/graphics/mapconfig.h"
 #include "ui/windows/vatsinatorwindow.h"
@@ -31,8 +34,13 @@ static constexpr qreal yFactor = MapConfig::baseWindowHeight() / 2 / MapConfig::
 MapView::MapView(QWidget* _parent) :
     QGraphicsView(_parent),
     __position(0.0, 0.0),
-    __zoom(1) {
+    __zoom(1),
+    __widget(new QGLWidget(QGLFormat(QGL::SampleBuffers))) {
   setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+  __widget->makeCurrent();
+  initGLExtensionsPointers();
+  __world.init();
+  setViewport(__widget);
 }
 
 QPointF
@@ -41,8 +49,10 @@ MapView::mapToLonLat(const QPoint& _point) {
 }
 
 void
-MapView::drawBackground(QPainter* _painter, const QRectF& _rect) {
-  __world.update();
+MapView::drawBackground(QPainter* _painter, const QRectF&) {
+  _painter->beginNativePainting();
+  __world.paint();
+  _painter->endNativePainting();
 }
 
 // void

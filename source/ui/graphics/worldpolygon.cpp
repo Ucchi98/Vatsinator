@@ -49,17 +49,19 @@ WorldPolygon::~WorldPolygon() {
 }
 
 void
-WorldPolygon::initializeGL() {
+WorldPolygon::init() {
 #ifndef CONFIG_NO_VBO
   __createVbos();
 #endif
 }
 
 void
-WorldPolygon::paintGL() {
-  qDebug() << "Drawing.";
+WorldPolygon::paint() {
   glEnableClientState(GL_VERTEX_ARRAY);
-  glColor3f(0.0, 0.0, 0.0);
+  
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClearColor(1.0, 1.0, 1.0, 1.0);
+  glColor3f(0.0, 0.0, 1.0);
   
 #ifndef CONFIG_NO_VBO
   __world->border->bind();

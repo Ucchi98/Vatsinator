@@ -26,6 +26,8 @@
 
 #include "ui/graphics/worldpolygon.h"
 
+class QGLWidget;
+
 class MapView : public QGraphicsView {
   
   Q_OBJECT
@@ -52,6 +54,7 @@ private:
   QPoint __lastClickPosition; /** x, y */
   qreal __zoom;
   
+  QGLWidget* __widget;
   WorldPolygon __world;
 
 };

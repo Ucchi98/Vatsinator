@@ -29,7 +29,6 @@ class MapScene : public QGraphicsScene {
 public:
   explicit MapScene(QObject* = 0);
   
-  
 
 };
 

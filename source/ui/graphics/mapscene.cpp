@@ -23,6 +23,4 @@
 #include "defines.h"
 
 MapScene::MapScene(QObject* _parent) :
-    QGraphicsScene(_parent) {
-  setBackgroundBrush(Qt::white);
-}
+    QGraphicsScene(_parent) {}
