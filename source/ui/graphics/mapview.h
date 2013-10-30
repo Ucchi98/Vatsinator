@@ -24,6 +24,8 @@
 #include <QPointF>
 #include <QPoint>
 
+#include "ui/graphics/worldpolygon.h"
+
 class MapView : public QGraphicsView {
   
   Q_OBJECT
@@ -34,6 +36,8 @@ public:
   QPointF mapToLonLat(const QPoint&);
   
 protected:
+  void drawBackground(QPainter*, const QRectF&) override;
+  
 //   void mousePressEvent(QMouseEvent*) override;
 //   void mouseReleaseEvent(QMouseEvent*) override;
   void mouseMoveEvent(QMouseEvent*) override;
@@ -47,6 +51,8 @@ private:
   QPoint __mousePosition; /** x, y */
   QPoint __lastClickPosition; /** x, y */
   qreal __zoom;
+  
+  WorldPolygon __world;
 
 };
 

@@ -34,34 +34,22 @@ class WorldMap :
     public Singleton<WorldMap> {
 
   Q_OBJECT
-
-  struct WorldMapVBO {
-    VertexBufferObject* border;
-    int                 borderSize;
-    VertexBufferObject* triangles;
-    int                 trianglesSize;
-  };
-
-  struct Polygon {
-    QVector<Point>          borders;
-    QVector<unsigned short> triangles;
-    WorldMapVBO             vbo;
-  };
   
   
 public:
   WorldMap();
-  virtual ~WorldMap();
-
-  void draw() const;
+  
+  const QVector<Point> &
+  borders() const { return __borders; }
+  
+  const QVector<unsigned short> &
+  triangles() const { return __triangles; }
 
 private:
   void __readDatabase();
 
-  Polygon __worldPolygon;
-
-private slots:
-  void __init();
+  QVector<Point>          __borders;
+  QVector<unsigned short> __triangles;
 
 
 };

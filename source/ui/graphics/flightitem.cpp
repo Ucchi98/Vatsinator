@@ -59,6 +59,10 @@ FlightItem::FlightItem(const Pilot* _pilot) :
   __label = new FlightLabelItem(this);
 }
 
+FlightItem::~FlightItem() {
+  delete __label;
+}
+
 void
 FlightItem::paint(QPainter* _painter, const QStyleOptionGraphicsItem*, QWidget*) {
   _painter->drawPixmap(__topLeft, __model);

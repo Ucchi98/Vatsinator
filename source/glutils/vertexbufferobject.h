@@ -35,6 +35,14 @@ public:
 
   void bind() const;
   void unbind() const;
+  
+  static constexpr bool enabled() {
+#ifndef CONFIG_NO_VBO
+    return true;
+#else
+    return false;
+#endif
+  }
 
 #ifndef NO_DEBUG
   static unsigned vboCount;

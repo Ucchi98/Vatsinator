@@ -34,6 +34,7 @@ class FlightItem : public QGraphicsItem {
 
 public:
   FlightItem(const Pilot*);
+  virtual ~FlightItem();
   
   void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*) override;
   QRectF boundingRect() const override;

@@ -30,37 +30,8 @@
 #include "defines.h"
 
 WorldMap::WorldMap() {
-//   __readDatabase();
-  QtConcurrent::run(this, &WorldMap::__readDatabase);
-  
-  connect(VatsinatorApplication::getSingletonPtr(), SIGNAL(glInitialized()),
-          this,                                     SLOT(__init()),
-          Qt::DirectConnection);
-}
-
-WorldMap::~WorldMap() {
-// #ifndef CONFIG_NO_VBO
-//   delete __worldPolygon.vbo.border;
-//   delete __worldPolygon.vbo.triangles;
-// #endif
-}
-
-void
-WorldMap::draw() const {
-// #ifndef CONFIG_NO_VBO
-//   __worldPolygon.vbo.border->bind();
-//   __worldPolygon.vbo.triangles->bind();
-// 
-//   glVertexPointer(2, GL_FLOAT, 0, 0); checkGLErrors(HERE);
-//   glDrawElements(GL_TRIANGLES, __worldPolygon.vbo.trianglesSize, GL_UNSIGNED_SHORT, 0); checkGLErrors(HERE);
-// 
-//   __worldPolygon.vbo.triangles->unbind();
-//   __worldPolygon.vbo.border->unbind();
-// #else
-//   glVertexPointer(2, GL_FLOAT, 0, &__worldPolygon.borders[0].x); checkGLErrors(HERE);
-//   glDrawElements(GL_TRIANGLES, __worldPolygon.triangles.size(), GL_UNSIGNED_SHORT,
-//                  &__worldPolygon.triangles[0]); checkGLErrors(HERE);
-// #endif
+//   QtConcurrent::run(this, &WorldMap::__readDatabase);
+  __readDatabase();
 }
 
 void WorldMap::__readDatabase() {
@@ -77,6 +48,11 @@ void WorldMap::__readDatabase() {
 
   VatsinatorApplication::log("World map polygons: %i.", size);
 
+  struct Polygon {
+    QVector<Point>          borders;
+    QVector<unsigned short> triangles;
+  };
+  
   QVector<Polygon> polygons;
 
   polygons.resize(size);
@@ -110,37 +86,12 @@ void WorldMap::__readDatabase() {
 
   for (Polygon& p: polygons) {
     for (const Point& pt: p.borders)
-      __worldPolygon.borders.push_back(pt);
+      __borders.push_back(pt);
 
     for (const unsigned short c: p.triangles)
-      __worldPolygon.triangles.push_back(c + offset);
+      __triangles.push_back(c + offset);
 
     offset += p.borders.size();
   }
 
 }
-
-void
-WorldMap::__init() {
-// #ifndef CONFIG_NO_VBO
-//   VatsinatorApplication::log("Preparing VBOs for WorldMap...");
-// 
-//   __worldPolygon.vbo.border = new VertexBufferObject(GL_ARRAY_BUFFER);
-//   __worldPolygon.vbo.border->sendData(sizeof(Point) * __worldPolygon.borders.size(),
-//                                       &__worldPolygon.borders[0].x);
-// 
-//   __worldPolygon.vbo.borderSize = __worldPolygon.borders.size();
-//   __worldPolygon.borders.clear();
-// 
-//   __worldPolygon.vbo.triangles = new VertexBufferObject(GL_ELEMENT_ARRAY_BUFFER);
-//   __worldPolygon.vbo.triangles->sendData(sizeof(unsigned short) * __worldPolygon.triangles.size(),
-//                                          &__worldPolygon.triangles[0]);
-// 
-//   __worldPolygon.vbo.trianglesSize = __worldPolygon.triangles.size();
-//   __worldPolygon.triangles.clear();
-// 
-//   VatsinatorApplication::log("WorldMap's VBOs ready.");
-// #endif
-}
-
-

@@ -64,6 +64,7 @@ set (ui_SRCS
     graphics/mapconfig.cpp
     graphics/mapscene.cpp
     graphics/mapview.cpp
+    graphics/worldpolygon.cpp
     
     pages/abstractsettingspage.cpp
     pages/colorspage.cpp

@@ -31,6 +31,10 @@ unsigned VertexBufferObject::vboCount = 0;
 
 VertexBufferObject::VertexBufferObject(GLenum _type):
     __type(_type) {
+  
+  static_assert(VertexBufferObject::enabled(),
+                "VBO disabled in this build.");
+  
   glGenBuffers(1, &__vboID); checkGLErrors(HERE);
   
 #ifndef NO_DEBUG

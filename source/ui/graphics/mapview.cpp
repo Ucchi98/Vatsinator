@@ -31,11 +31,18 @@ static constexpr qreal yFactor = MapConfig::baseWindowHeight() / 2 / MapConfig::
 MapView::MapView(QWidget* _parent) :
     QGraphicsView(_parent),
     __position(0.0, 0.0),
-    __zoom(1) {}
+    __zoom(1) {
+  setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+}
 
 QPointF
 MapView::mapToLonLat(const QPoint& _point) {
   return QPointF(_point.x() * xFactor * __zoom, _point.y() * yFactor * __zoom);
+}
+
+void
+MapView::drawBackground(QPainter* _painter, const QRectF& _rect) {
+  __world.update();
 }
 
 // void

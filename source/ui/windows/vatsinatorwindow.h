@@ -41,7 +41,7 @@ signals:
 
 public:
   explicit VatsinatorWindow(QWidget* = 0);
-  virtual ~VatsinatorWindow() = default;
+  virtual ~VatsinatorWindow();
   
   /**
    * Sets the specified message in the bottom-left bar corner

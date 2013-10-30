@@ -108,6 +108,12 @@ VatsinatorWindow::VatsinatorWindow(QWidget* _parent) :
   statusBarUpdate();
 }
 
+VatsinatorWindow::~VatsinatorWindow() {
+  if (Map->scene()) {
+    delete Map->scene();
+  }
+}
+
 void
 VatsinatorWindow::statusBarUpdate(const QString& _message) {
   if (_message.isEmpty()) {
