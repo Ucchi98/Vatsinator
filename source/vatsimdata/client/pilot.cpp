@@ -257,58 +257,77 @@ Pilot::__generateLines() const {
   if (!__route.origin.isEmpty())
     ap = VatsimDataHandler::getSingleton().activeAirports()[__route.origin];
 
+  bool hasOrgApData = false;
   if (ap && ap->data()) {
     double myLon = ap->data()->longitude;
     double myLat = ap->data()->latitude;
-/*
-    if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-        VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
-      myLon += 360;
-    else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-             VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
-      myLon -= 360;
-*/
-    __lineFrom << myLon
-               << myLat;
+    __lineAll << myLon << myLat;
+    hasOrgApData = true;
   }
-  
-  __lineTo << __position.longitude
-           << __position.latitude;
   
   __parseRoute();
   
-  __lineFrom << __position.longitude
-             << __position.latitude;
-
   ap = NULL;
 
   if (!__route.destination.isEmpty())
     ap = VatsimDataHandler::getSingleton().activeAirports()[__route.destination];
 
+  bool hasDstApData = false;
   if (ap && ap->data()) {
     double myLon = ap->data()->longitude;
     double myLat = ap->data()->latitude;
-/*
-    if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-        VatsimDataHandler::distance(myLon + 360, myLat, __position.longitude, __position.latitude))
-      myLon += 360;
-    else if (VatsimDataHandler::distance(myLon, myLat, __position.longitude, __position.latitude) >
-             VatsimDataHandler::distance(myLon - 360, myLat, __position.longitude, __position.latitude))
-      myLon -= 360;
-*/
-    __lineTo << myLon
-             << myLat;
+    __lineAll << myLon << myLat;
+    hasDstApData = true;
   }
 
-  if(__isCrossingIDL(__lineTo) || __isCrossingIDL(__lineFrom)){ 
-    for(int i=0 ; i<__lineFrom.size() ; i++){
-      if(__lineFrom[i]<0) __lineFrom[i]+=360; i++;
+  /* Shift Coord */
+  GLfloat aLon = __position.longitude;
+  GLfloat aLat = __position.latitude;
+  if(__isCrossingIDL(__lineAll)){
+    for(int i=0 ; i<__lineAll.size() ; i++){
+      if(__lineAll[i]<0) __lineAll[i]+=360; i++;
     }
-    for(int i=0 ; i<__lineTo.size() ; i++){
-      if(__lineTo[i]<0) __lineTo[i]+=360; i++;
-    }
+    if(aLon<0) aLon += 360;
   }
- 
+
+  /* Find aircraft position on __lineAll */
+  int startIdx = 0;
+  if(hasOrgApData){
+    // set first point of __lineFrom to the origin airport 
+    __lineFrom << __lineAll[0] << __lineAll[1];
+    startIdx = 2;
+  }
+  int lastIdx = __lineAll.size();
+  if(hasDstApData){
+    lastIdx -= 2;
+  }
+
+  // set first point of __lineTo to the aircraft position
+  __lineTo << aLon << aLat;
+
+  QVector<float>* curLine = &__lineFrom;
+  GLfloat pLon = __lineAll[0];
+  GLfloat pLat = __lineAll[1];
+  for(int i=startIdx ; i<lastIdx ; i++){
+
+    GLfloat cLon = __lineAll[i]; i++;
+    GLfloat cLat = __lineAll[i];
+    if(pLon<aLon && aLon<cLon || cLon<aLon && aLon<pLon){
+      curLine = &__lineTo;
+    }
+    *curLine << cLon << cLat;
+    pLon = cLon;
+    pLat = cLat;
+  }
+
+  // set last point of __lineFrom to the aircraft position 
+  __lineFrom << aLon << aLat;
+
+  // set last point of __lineTo to the destination airport
+  if(hasDstApData)
+    __lineTo << __lineAll[lastIdx]; lastIdx++;
+    __lineTo << __lineAll[lastIdx];
+
   __linesGenerated = true;
 }
 
@@ -321,12 +340,15 @@ bool Pilot::__isCrossingIDL(QVector<GLfloat>& line) const
   GLfloat clon = plon;
   GLfloat clat = plat;
 
+  double pSign = plon / fabs(plon);
+  double cSign = pSign;
+
   for(int i=2 ; i<line.size() ; i++){
+
 		clon = line[i]; i++;
 		clat = line[i];
+		cSign = clon / fabs(clon);
 
-		double pSign = plon / fabs(plon);
-		double cSign = clon / fabs(clon);
 		double dst1 = 0;
 		double dst2 = 0;
 
@@ -341,7 +363,8 @@ bool Pilot::__isCrossingIDL(QVector<GLfloat>& line) const
 
 			if(dst1>dst2) isCrossingIDL = true;
 
-			/* debug print
+			/* debug print */
+                        /*
 			printf("%s: %f %f -> %f %f, Dst1: %f Dst2: %f, IDL: %s\n",
 				__callsign.toLatin1().data(),
 				plon, plat, clon, clat, dst1, dst2,
@@ -352,6 +375,7 @@ bool Pilot::__isCrossingIDL(QVector<GLfloat>& line) const
 
 		plon = clon;
 		plat = clat;
+		pSign = cSign;
   }
   return false;
 }
@@ -398,13 +422,15 @@ Pilot::__parseRoute() const {
     float we = cap2.left(3).toFloat();
     if (cap2.endsWith('W'))
       we = -we;
-    
+/*    
     if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
         (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
         (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
       curList = &__lineTo;
     
     *curList << we << ns;
+ */   
+    __lineAll << we << ns; 
     
     pos += expNo1.matchedLength();
     
@@ -435,14 +461,15 @@ Pilot::__parseRoute() const {
     
     if (cap2.endsWith('W'))
       we = -we;
-    
+    /* 
     if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
         (__lineFrom[__lineFrom.size() - 2] < __position.longitude && we > __position.longitude) ||
         (__lineFrom[__lineFrom.size() - 2] > __position.longitude && we < __position.longitude)))
       curList = &__lineTo;
-    
+ 
     *curList << we << ns;
-    
+    */
+    __lineAll << we << ns; 
     pos += expNo2.matchedLength();
     
     natFound = true;
@@ -464,14 +491,15 @@ Pilot::__parseRoute() const {
       ns = -ns;
     
     float west = 0 - cap.mid(2, 2).toFloat();
-    
+/*    
     if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
         (__lineFrom[__lineFrom.size() - 2] < __position.longitude && west > __position.longitude) ||
         (__lineFrom[__lineFrom.size() - 2] > __position.longitude && west < __position.longitude)))
       curList = &__lineTo;
     
     *curList << west << ns;
-    
+ */   
+    __lineAll << west << ns; 
     pos += expNo3.matchedLength();
     
     natFound = true;
@@ -489,14 +517,15 @@ Pilot::__parseRoute() const {
     
     float north = cap.left(2).toFloat();
     float west = 0 - cap.right(2).toFloat();
-    
+/*    
     if (curList == &__lineFrom && !__lineFrom.isEmpty() && (
         (__lineFrom[__lineFrom.size() - 2] < __position.longitude && west > __position.longitude) ||
         (__lineFrom[__lineFrom.size() - 2] > __position.longitude && west < __position.longitude)))
       curList = &__lineTo;
     
     *curList << west << north;
-    
+ */   
+    __lineAll << west << north; 
     pos += expNo4.matchedLength();
     
     natFound = true;

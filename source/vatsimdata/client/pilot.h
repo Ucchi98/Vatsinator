@@ -182,6 +182,7 @@ private:
 
   mutable QVector<GLfloat> __lineFrom;
   mutable QVector<GLfloat> __lineTo;
+  mutable QVector<GLfloat> __lineAll;
   
   /* Route parsing is pretty rich, avoid doing it if unnesesary */
   mutable bool __linesGenerated;
